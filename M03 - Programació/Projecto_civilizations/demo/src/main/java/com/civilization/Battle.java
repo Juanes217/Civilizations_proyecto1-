@@ -1,4 +1,4 @@
-package com.civilizations;
+package com.civilization;
 
 import java.util.ArrayList;
 import java.util.Random;

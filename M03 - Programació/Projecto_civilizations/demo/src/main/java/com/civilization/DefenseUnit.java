@@ -1,4 +1,4 @@
-package Projecto;
+package com.civilization;
 
 public class DefenseUnit implements MilitaryUnit, Variables {
 	    int armor;

@@ -1,4 +1,4 @@
-package Projecto;
+package com.civilization;
 
 public class Magician extends SpecialUnit implements Variables {
     

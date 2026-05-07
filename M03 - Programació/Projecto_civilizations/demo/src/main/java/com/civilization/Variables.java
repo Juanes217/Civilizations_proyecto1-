@@ -1,4 +1,4 @@
-package Projecto;
+package com.civilization;
 
 public interface Variables {
 	// resources available to create the first enemy fleet

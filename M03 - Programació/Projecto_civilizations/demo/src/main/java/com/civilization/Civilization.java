@@ -1,4 +1,4 @@
-package Projecto;
+package com.civilization;
 import java.util.ArrayList;
 
 public class Civilization implements Variables {

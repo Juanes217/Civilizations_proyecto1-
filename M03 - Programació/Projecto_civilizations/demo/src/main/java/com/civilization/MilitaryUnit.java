@@ -1,4 +1,4 @@
-package Projecto;
+package com.civilization;
 
 public interface MilitaryUnit {
 	abstract int attack();

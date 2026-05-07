@@ -1,4 +1,4 @@
-package Projecto; // Cámbialo a com.civilizations si es el que usas, pero que sea igual en todas
+package com.civilization;
 
 public class ArrowTower extends DefenseUnit implements Variables {
     

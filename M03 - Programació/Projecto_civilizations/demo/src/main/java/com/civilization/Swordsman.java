@@ -1,4 +1,4 @@
-package Projecto;
+package com.civilization;
 
 public class Swordsman extends AttackUnit implements Variables {
     

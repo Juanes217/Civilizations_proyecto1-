@@ -1,24 +1,24 @@
-package Projecto;
+package com.civilization;
 
-public class Crossbow extends AttackUnit implements Variables {
+public class Cannon extends AttackUnit implements Variables {
     
     private int initialArmor;
 
-    // CONSTRUCTOR 1: Con tecnología (Cálculo directo para evitar errores de compilación)
-    public Crossbow(int techDefense, int techAttack) {
+    // CONSTRUCTOR 1: Con tecnología (Cálculo directo en super para evitar errores)
+    public Cannon(int techDefense, int techAttack) {
         super(
-            ARMOR_CROSSBOW + (techDefense * PLUS_ARMOR_CROSSBOW_BY_TECHNOLOGY * ARMOR_CROSSBOW / 100), 
-            BASE_DAMAGE_CROSSBOW + (techAttack * PLUS_ATTACK_CROSSBOW_BY_TECHNOLOGY * BASE_DAMAGE_CROSSBOW / 100)
+            ARMOR_CANNON + (techDefense * PLUS_ARMOR_CANNON_BY_TECHNOLOGY * ARMOR_CANNON / 100), 
+            BASE_DAMAGE_CANNON + (techAttack * PLUS_ATTACK_CANNON_BY_TECHNOLOGY * BASE_DAMAGE_CANNON / 100)
         );
         
-        // Guardamos el valor final calculado para resetear después de batalla
+        // La armadura inicial es la calculada con tecnología
         this.initialArmor = this.armor; 
     }
 
     // CONSTRUCTOR 2: Valores básicos (Enemigo)
-    public Crossbow() {
-        super(ARMOR_CROSSBOW, BASE_DAMAGE_CROSSBOW);
-        this.initialArmor = ARMOR_CROSSBOW;
+    public Cannon() {
+        super(ARMOR_CANNON, BASE_DAMAGE_CANNON);
+        this.initialArmor = ARMOR_CANNON;
     }
 
     // --- MÉTODOS DE LA INTERFAZ MILITARYUNIT ---
@@ -36,27 +36,27 @@ public class Crossbow extends AttackUnit implements Variables {
     }
 
     public int getFoodCost() { 
-        return FOOD_COST_CROSSBOW; 
+        return FOOD_COST_CANNON; 
     }
 
     public int getWoodCost() { 
-        return WOOD_COST_CROSSBOW; 
+        return WOOD_COST_CANNON; 
     }
 
     public int getIronCost() { 
-        return IRON_COST_CROSSBOW; 
+        return IRON_COST_CANNON; 
     }
 
     public int getManaCost() { 
-        return MANA_COST_CROSSBOW; 
+        return MANA_COST_CANNON; 
     }
 
     public int getChanceGeneratingWaste() { 
-        return CHANCE_GENERATNG_WASTE_CROSSBOW; 
+        return CHANCE_GENERATNG_WASTE_CANNON; 
     }
 
     public int getChanceAttackAgain() { 
-        return CHANCE_ATTACK_AGAIN_CROSSBOW; 
+        return CHANCE_ATTACK_AGAIN_CANNON; 
     }
 
     public void resetArmor() {

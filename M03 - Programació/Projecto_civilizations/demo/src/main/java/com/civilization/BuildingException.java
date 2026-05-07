@@ -1,4 +1,4 @@
-package Projecto;
+package com.civilization;
 
 public class BuildingException extends Exception {
     private static final long serialVersionUID = 1L;
