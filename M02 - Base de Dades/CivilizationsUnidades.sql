@@ -58,3 +58,47 @@ CREATE TABLE SPECIAL_UNITS_STATS (
     CONSTRAINT FK_SPECIAL_CIV_STATS FOREIGN KEY (CIVILIZATION_ID) REFERENCES CIVILIZATION_STATS (CIVILIZATION_ID),
     CONSTRAINT CHK_TYPE_SPECIAL CHECK (TYPE_UNIT IN ('Magician', 'Priest'))
 );
+
+
+
+-- ==========================================
+-- 1. INSERTAR LA CIVILIZACIÓN INICIAL
+-- ==========================================
+INSERT INTO civilization_stats (
+    civilization_id, name, wood_amount, iron_amount, food_amount, mana_amount, 
+    magictower_counter, church_counter, farm_counter, smithy_counter, carpentry_counter, 
+    technology_defense_level, technology_attack_level, battles_counter
+) VALUES (
+    civilization_seq.NEXTVAL, 'Roma', 15000, 12000, 18000, 500, 
+    1, 1, 2, 1, 1, 
+    1, 1, 0
+);
+
+-- ==========================================
+-- 2. INSERTAR EJÉRCITO DE ATAQUE INICIAL
+-- ==========================================
+-- Insertamos 2 Espadachines (ID 1 y 2)
+INSERT INTO ATTACK_UNITS_STATS (CIVILIZATION_ID, UNIT_ID, TYPE_UNIT, ARMOR, BASE_DAMAGE, EXPERIENCE, SANCTIFIED)
+VALUES (civilization_seq.CURRVAL, 1, 'Swordsman', 50, 25, 0, 'NO');
+INSERT INTO ATTACK_UNITS_STATS (CIVILIZATION_ID, UNIT_ID, TYPE_UNIT, ARMOR, BASE_DAMAGE, EXPERIENCE, SANCTIFIED)
+VALUES (civilization_seq.CURRVAL, 2, 'Swordsman', 50, 25, 0, 'NO');
+
+-- Insertamos 1 Ballestero (ID 3)
+INSERT INTO ATTACK_UNITS_STATS (CIVILIZATION_ID, UNIT_ID, TYPE_UNIT, ARMOR, BASE_DAMAGE, EXPERIENCE, SANCTIFIED)
+VALUES (civilization_seq.CURRVAL, 3, 'Crossbow', 30, 45, 0, 'NO');
+
+-- ==========================================
+-- 3. INSERTAR DEFENSAS INICIALES
+-- ==========================================
+-- Insertamos 1 Torre de Flechas (ID 1)
+INSERT INTO DEFENSE_UNITS_STATS (CIVILIZATION_ID, UNIT_ID, TYPE_UNIT, ARMOR, BASE_DAMAGE, EXPERIENCE, SANCTIFIED)
+VALUES (civilization_seq.CURRVAL, 1, 'Arrow Tower', 100, 40, 0, 'NO');
+
+-- ==========================================
+-- 4. INSERTAR UNIDADES ESPECIALES
+-- ==========================================
+-- Insertamos 1 Mago (ID 1)
+INSERT INTO SPECIAL_UNITS_STATS (CIVILIZATION_ID, UNIT_ID, TYPE_UNIT, ARMOR, BASE_DAMAGE, EXPERIENCE)
+VALUES (civilization_seq.CURRVAL, 1, 'Magician', 20, 60, 0);
+
+COMMIT;
