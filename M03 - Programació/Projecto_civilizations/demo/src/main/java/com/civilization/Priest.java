@@ -11,6 +11,9 @@ public class Priest extends SpecialUnit implements Variables {
             armor = 0;
             baseDamage = 0;
     }
+    public Priest(){
+        super(0, 0);
+    }
 
     // --- MÉTODOS OBLIGATORIOS DE MILITARYUNIT ---
 
