@@ -6,10 +6,9 @@ public class Main {
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        
-        // SOLUCIÓN RÁPIDA: He puesto 100 millones de cada recurso para que NO te falte de nada
-        // (Ataque, Defensa, Madera, Hierro, Comida, Mana, Torre, Iglesia, Granja, Herreria, Carpinteria, Batallas)
         Civilization civilization = new Civilization(0, 0, 30000, 30000, 30000, 2000, 1, 0, 1, 1, 1, 0);
+        Battle battle = new Battle(civilization.getArmy(), enemyArmy);
+                battle.simulateBattle();
         
         int option;
         
