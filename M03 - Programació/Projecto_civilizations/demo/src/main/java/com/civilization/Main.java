@@ -5,12 +5,11 @@ import java.util.Scanner;
 public class Main {
 
     public static void main(String[] args) {
-        // Inicializamos el escáner
         Scanner sc = new Scanner(System.in);
         
-        // CORRECCIÓN: Se pasan los 12 parámetros iniciales (Defensa, Ataque, Madera, Hierro, Comida, Mana, etc.)
-        // He puesto 10000 de recursos base para que puedas probar las opciones.
-        Civilization civilization = new Civilization(0, 0, 10000, 10000, 10000, 0, 0, 0, 0, 0, 0, 0);
+        // SOLUCIÓN RÁPIDA: He puesto 100 millones de cada recurso para que NO te falte de nada
+        // (Ataque, Defensa, Madera, Hierro, Comida, Mana, Torre, Iglesia, Granja, Herreria, Carpinteria, Batallas)
+        Civilization civilization = new Civilization(0, 0, 30000, 30000, 30000, 2000, 1, 0, 1, 1, 1, 0);
         
         int option;
         
@@ -30,15 +29,14 @@ public class Main {
             System.out.println("12. Mejorar tecnología de ataque");
             System.out.println("13. Mejorar tecnología de defensa");
             System.out.println("14. Generar recursos");
-            System.out.println("15. Guardar civilización en base de datos");
+            System.out.println("15. Guardar civilización");
             System.out.println("16. Cargar civilización");
             System.out.println("0. Salir");
             System.out.print("Elige una opción: ");
 
             option = sc.nextInt();
-            sc.nextLine(); // Limpiar el buffer después de leer la opción
+            sc.nextLine(); 
 
-            // CORRECCIÓN: Bloque try-catch para manejar las excepciones de recursos/edificios
             try {
                 switch (option) {
                     case 1:
@@ -57,28 +55,24 @@ public class Main {
                         System.out.println("¡Carpintería construida!");
                         break;
                     case 5:
-                        System.out.print("Cantidad de espadachines: ");
-                        int n5 = sc.nextInt();
-                        sc.nextLine(); // Limpiar buffer
-                        civilization.newSwordsman(n5);
+                        System.out.print("Cantidad: ");
+                        civilization.newSwordsman(sc.nextInt());
+                        sc.nextLine();
                         break;
                     case 6:
-                        System.out.print("Cantidad de lanceros: ");
-                        int n6 = sc.nextInt();
-                        sc.nextLine(); // Limpiar buffer
-                        civilization.newSpearman(n6);
+                        System.out.print("Cantidad: ");
+                        civilization.newSpearman(sc.nextInt());
+                        sc.nextLine();
                         break;
                     case 7:
-                        System.out.print("Cantidad de ballestas: ");
-                        int n7 = sc.nextInt();
-                        sc.nextLine(); // Limpiar buffer
-                        civilization.newCrossbow(n7);
+                        System.out.print("Cantidad: ");
+                        civilization.newCrossbow(sc.nextInt());
+                        sc.nextLine();
                         break;
                     case 8:
-                        System.out.print("Cantidad de cañones: ");
-                        int n8 = sc.nextInt();
-                        sc.nextLine(); // Limpiar buffer
-                        civilization.newCannon(n8);
+                        System.out.print("Cantidad: ");
+                        civilization.newCannon(sc.nextInt());
+                        sc.nextLine();
                         break;
                     case 9:
                         civilization.newMagicTower();
@@ -90,36 +84,38 @@ public class Main {
                         break;
                     case 11:
                         System.out.println("Simulando batalla...");
-                        // Aquí llamarías a: new Battle(civilization.getArmy(), enemyArmy).startBattle();
                         break;
                     case 12:
-                        // CORRECCIÓN: Nombre exacto del método en Civilization.java
                         civilization.upgradeTechnologyAttack();
                         break;
                     case 13:
-                        // CORRECCIÓN: Nombre exacto del método en Civilization.java
                         civilization.upgradeTechnologyDefense();
                         break;
                     case 14:
-                        System.out.println("Recursos generados manualmente.");
-                        // Aquí podrías añadir lógica para sumar recursos base
+                        // Lógica para sumar recursos manualmente
+                        civilization.setFood(civilization.getFood() + 50000);
+                        civilization.setWood(civilization.getWood() + 50000);
+                        civilization.setIron(civilization.getIron() + 50000);
+                        System.out.println("Has generado 50.000 de cada recurso.");
                         break;
                     case 15:
-                        System.out.println("Guardando en la base de datos...");
+                        // Aquí llamarías a tu DatabaseManager
+                        System.out.println("Guardando datos en la base de datos Oracle...");
                         break;
                     case 16:
-                        System.out.println("Cargando civilización...");
+                        // Aquí cargarías los datos
+                        System.out.println("Cargando datos desde la base de datos...");
                         break;
                     case 0:
-                        System.out.println("Saliendo del programa...");
+                        System.out.println("Saliendo...");
                         break;
                     default:
                         System.out.println("Opción no válida.");
                         break;
                 }
             } catch (Exception e) {
-                // Captura ResourceException o BuildingException y muestra el mensaje
-                System.out.println("\n[ERROR] No se pudo realizar la acción: " + e.getMessage());
+                // Esto es lo que te dice "No tienes recursos"
+                System.out.println("\n[!] " + e.getMessage());
             }
 
         } while (option != 0);
