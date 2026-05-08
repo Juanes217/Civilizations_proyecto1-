@@ -1,3 +1,6 @@
+-- Borrar la secuencia si ya existe para evitar errores al re-ejecutar
+-- DROP SEQUENCE civilization_seq; 
+
 CREATE SEQUENCE civilization_seq START WITH 1 INCREMENT BY 1;
 
 CREATE TABLE civilization_stats (
