@@ -4,108 +4,127 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class Battle implements Variables {
-    private ArrayList<MilitaryUnit>[] civilizationArmy;
-    private ArrayList<MilitaryUnit>[] enemyArmy;
-    private ArrayList<MilitaryUnit>[][] armies; 
-    private StringBuilder battleDevelopment;
-    private int[][] initialCostFleet; // [0] civilizacion, [1] enemigo
-    private int initialNumberUnitsCivilization;
-    private int initialNumberUnitsEnemy;
-    private int[] wasteWoodIron; 
-    private int enemyDrops;
-    private int civilizationDrops;
-    private int[][] resourcesLosses; // [0] civilización, [1] enemigo
-    private int[][] initialArmies;
-    private int[] actualNumberUnitsCivilization;
-    private int[] actualNumberUnitsEnemy;
-    private Random random = new Random();
+    private ArrayList<MilitaryUnit>[][] ejercitos; 
+    private StringBuilder desarrolloBatalla;
+    private int unidadesInicialesCivilizacion = 0;
+    private int unidadesInicialesEnemigo = 0;
+    private int bajasCivilizacion = 0;
+    private int bajasEnemigo = 0;
+    private int[][] perdidasRecursos; // [Bando][0=Comida, 1=Madera, 2=Hierro]
+    private Random aleatorio = new Random();
 
-    public Battle(ArrayList<MilitaryUnit>[] civilizationArmy, ArrayList<MilitaryUnit>[] enemyArmy) {
-        this.civilizationArmy = civilizationArmy;
-        this.enemyArmy = enemyArmy;
-        
-        this.armies = new ArrayList[2][9];
-        this.armies[0] = civilizationArmy;
-        this.armies[1] = enemyArmy;
+    public Battle(ArrayList<MilitaryUnit>[] ejercitoCivilizacion, ArrayList<MilitaryUnit>[] ejercitoEnemigo) {
+        this.ejercitos = new ArrayList[2][9];
+        this.ejercitos[0] = ejercitoCivilizacion;
+        this.ejercitos[1] = ejercitoEnemigo;
+        this.desarrolloBatalla = new StringBuilder();
+        this.perdidasRecursos = new int[2][3]; 
 
-        this.battleDevelopment = new StringBuilder();
-        this.initialCostFleet = new int[2][3];
-        this.wasteWoodIron = new int[2];
-        this.resourcesLosses = new int[2][4]; // La columna 3 es la ponderada
-        this.initialArmies = new int[2][9];
-        this.actualNumberUnitsCivilization = new int[9];
-        this.actualNumberUnitsEnemy = new int[9];
-
-        initBattleData();
+        inicializarDatosBatalla();
     }
 
-    private void initBattleData() {
+    private void inicializarDatosBatalla() {
         for (int i = 0; i < 9; i++) {
-            // Civilización
-            initialArmies[0][i] = armies[0][i].size();
-            actualNumberUnitsCivilization[i] = armies[0][i].size();
-            initialNumberUnitsCivilization += initialArmies[0][i];
-            for (MilitaryUnit u : armies[0][i]) {
-                initialCostFleet[0][0] += u.getFoodCost();
-                initialCostFleet[0][1] += u.getWoodCost();
-                initialCostFleet[0][2] += u.getIronCost();
-            }
-            // Enemigo
-            initialArmies[1][i] = armies[1][i].size();
-            actualNumberUnitsEnemy[i] = armies[1][i].size();
-            initialNumberUnitsEnemy += initialArmies[1][i];
-            for (MilitaryUnit u : armies[1][i]) {
-                initialCostFleet[1][0] += u.getFoodCost();
-                initialCostFleet[1][1] += u.getWoodCost();
-                initialCostFleet[1][2] += u.getIronCost();
-            }
+            unidadesInicialesCivilizacion += ejercitos[0][i].size();
+            unidadesInicialesEnemigo += ejercitos[1][i].size();
         }
     }
 
-    // Lógica de combate (Simplificada para el ejemplo, debes iterar ataques)
     public void simulateBattle() {
-        while (!isBattleOver()) {
-            // 1. Seleccionar atacante y defensor según probabilidades del PDF
-            // 2. Ejecutar fight()
-            // 3. Actualizar contadores
-            // Nota: Aquí iría tu bucle de simulateRound
+        desarrolloBatalla.append("--- INICIO DE LA BATALLA ---\n");
+        int turno = 0; 
+
+        while (!batallaTerminada()) {
+            int bandoAtacante = turno % 2;
+            int bandoDefensor = (bandoAtacante == 0) ? 1 : 0;
+
+            // Seleccionar grupo atacante (PDF: elegir hasta que no esté vacío)
+            int grupoAtacante;
+            do {
+                grupoAtacante = elegirGrupoUnidad(bandoAtacante);
+            } while (ejercitos[bandoAtacante][grupoAtacante].isEmpty());
+            
+            MilitaryUnit atacante = ejercitos[bandoAtacante][grupoAtacante].get(aleatorio.nextInt(ejercitos[bandoAtacante][grupoAtacante].size()));
+
+            // Seleccionar grupo defensor
+            int grupoDefensor;
+            do {
+                grupoDefensor = elegirGrupoUnidad(bandoDefensor);
+            } while (ejercitos[bandoDefensor][grupoDefensor].isEmpty());
+            
+            MilitaryUnit defensor = ejercitos[bandoDefensor][grupoDefensor].get(aleatorio.nextInt(ejercitos[bandoDefensor][grupoDefensor].size()));
+
+            // Ejecutar el combate
+            pelear(atacante, defensor, bandoAtacante, grupoDefensor);
+            
+            turno++;
+        }
+        
+        System.out.println(desarrolloBatalla.toString());
+        System.out.println(obtenerGanador());
+    }
+
+    private void pelear(MilitaryUnit atacante, MilitaryUnit defensor, int bandoAtacante, int grupoDefensor) {
+        int bandoDefensor = (bandoAtacante == 0) ? 1 : 0;
+        int daño = atacante.attack();
+        
+        desarrolloBatalla.append(atacante.getClass().getSimpleName() + " ataca con " + daño + " a " + defensor.getClass().getSimpleName() + "\n");
+
+        defensor.takeDamage(daño);
+
+        if (defensor.getActualArmor() <= 0) {
+            desarrolloBatalla.append("   ¡Baja: " + defensor.getClass().getSimpleName() + " ha sido destruido!\n");
+            
+            // Registrar pérdidas económicas según fórmula PDF
+            perdidasRecursos[bandoDefensor][0] += defensor.getFoodCost();
+            perdidasRecursos[bandoDefensor][1] += defensor.getWoodCost();
+            perdidasRecursos[bandoDefensor][2] += defensor.getIronCost();
+
+            ejercitos[bandoDefensor][grupoDefensor].remove(defensor);
+            if (bandoDefensor == 0) bajasCivilizacion++; else bajasEnemigo++;
         }
     }
 
-    private void fight(MilitaryUnit attacker, MilitaryUnit defender, int sideAttacker, int groupDefender) {
-        // Al morir una unidad, sumamos sus costes a resourcesLosses
-        // Ejemplo si muere el defensor (que es el enemigo index 1):
-        if (defender.getActualArmor() <= 0) {
-            resourcesLosses[1][0] += defender.getFoodCost();
-            resourcesLosses[1][1] += defender.getWoodCost();
-            resourcesLosses[1][2] += defender.getIronCost();
-            armies[1][groupDefender].remove(defender);
-            enemyDrops++;
-        }
+    private int elegirGrupoUnidad(int bando) {
+        int prob = aleatorio.nextInt(100);
+        if (prob < 35) return 0; // Espadachín
+        if (prob < 60) return 1; // Lancero
+        if (prob < 80) return 2; // Ballesta
+        if (prob < 90) return 3; // Cañón
+        if (prob < 93) return 4; // Torre Flechas
+        if (prob < 95) return 5; // Catapulta
+        if (prob < 97) return 6; // Torre Cohetes
+        if (prob < 99) return 7; // Mago
+        return 8; // Sacerdote
     }
 
-    public String getWinner() {
-        // Cálculo ponderado según PDF: Hierro + Madera/5 + Comida/10
-        // Para evitar decimales, usamos la fórmula de comparación:
-        resourcesLosses[0][3] = resourcesLosses[0][2] + (resourcesLosses[0][1] / 5) + (resourcesLosses[0][0] / 10);
-        resourcesLosses[1][3] = resourcesLosses[1][2] + (resourcesLosses[1][1] / 5) + (resourcesLosses[1][0] / 10);
+    public String obtenerGanador() {
+        // Fórmula del PDF: Hierro + Madera/5 + Comida/10
+        double totalCiv = perdidasRecursos[0][2] + (perdidasRecursos[0][1] / 5.0) + (perdidasRecursos[0][0] / 10.0);
+        double totalEnem = perdidasRecursos[1][2] + (perdidasRecursos[1][1] / 5.0) + (perdidasRecursos[1][0] / 10.0);
 
-        if (resourcesLosses[0][3] < resourcesLosses[1][3]) {
-            return "¡CIVILIZACIÓN GANA! (Menos pérdidas)";
+        String res = "\n======= RECUENTO FINAL DE LA BATALLA =======\n";
+        res += "Unidades perdidas por ti: " + bajasCivilizacion + " (Valor: " + (int)totalCiv + ")\n";
+        res += "Unidades enemigas destruidas: " + bajasEnemigo + " (Valor: " + (int)totalEnem + ")\n";
+
+        if (totalCiv < totalEnem) {
+            return res + "\n>>> ¡VICTORIA PARA LA CIVILIZACIÓN! <<<";
+        } else if (totalCiv > totalEnem) {
+            return res + "\n>>> ¡DERROTA! El enemigo ha vencido <<<";
         } else {
-            return "¡EL ENEMIGO GANA! (Civilización perdió más)";
+            return res + "\n>>> EMPATE TÉCNICO <<<";
         }
     }
 
-    private boolean isBattleOver() {
-        int currentCiv = 0;
-        int currentEnem = 0;
-        for(int i=0; i<9; i++) {
-            currentCiv += armies[0][i].size();
-            currentEnem += armies[1][i].size();
+    private boolean batallaTerminada() {
+        int actualesCiv = 0;
+        int actualesEnem = 0;
+        for (int i = 0; i < 9; i++) {
+            actualesCiv += ejercitos[0][i].size();
+            actualesEnem += ejercitos[1][i].size();
         }
-        // Condición del 20% inicial
-        return currentCiv <= (initialNumberUnitsCivilization * 0.2) || 
-               currentEnem <= (initialNumberUnitsEnemy * 0.2);
+        // Condición PDF: Termina cuando un bando pierde el 80% (queda el 20%)
+        return actualesCiv <= (unidadesInicialesCivilizacion * 0.2) || 
+               actualesEnem <= (unidadesInicialesEnemigo * 0.2);
     }
 }
