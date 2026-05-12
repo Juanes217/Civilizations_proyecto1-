@@ -1,55 +1,120 @@
 :root {
-    --primary: #2c3e50;
-    --gold: #f1c40f;
-    --white: #ecf0f1;
+    --primary-blue: #1a5fb4;
+    --secondary-blue: #62a0ea;
+    --bg-color: #f6f8fa;
+    --card-bg: #ffffff;
+    --text-main: #24292e;
+    --text-light: #586069;
+    --border-color: #d1d5da;
 }
 
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-main);
     margin: 0;
-    background-color: #1a1a1a;
-    color: var(--white);
+    line-height: 1.6;
 }
 
+/* Header Ajustado - Sin espacios raros */
 .navbar {
+    background-color: var(--card-bg);
+    border-bottom: 3px solid var(--primary-blue);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 5%;
-    background: var(--primary);
-    border-bottom: 2px solid var(--gold);
+    padding: 10px 50px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Espacio entre foto y texto */
+}
+
+.logo img {
+    height: 50px;
+    width: auto;
+    border-radius: 5px;
+}
+
+.logo span {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-blue);
 }
 
 .nav-links {
     list-style: none;
     display: flex;
-    gap: 20px;
+    gap: 25px;
 }
 
 .nav-links a {
-    color: white;
     text-decoration: none;
-    transition: 0.3s;
+    color: var(--text-main);
+    font-weight: 500;
+    transition: color 0.3s;
 }
 
 .nav-links a:hover {
-    color: var(--gold);
+    color: var(--primary-blue);
 }
 
-/* Animación de entrada */
-.fade-in {
-    animation: fadeIn 2s ease-in;
+/* Contenedor principal */
+.container {
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
+h1 {
+    color: var(--primary-blue);
+    font-size: 2.5rem;
 }
 
-/* Adaptación a móvil (Responsive) */
-@media (max-width: 600px) {
-    .nav-links {
-        flex-direction: column;
-        text-align: center;
-    }
+.subtitle {
+    color: var(--text-light);
+    margin-bottom: 40px;
+}
+
+/* Tablas con estilo Azul */
+.table-container {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th {
+    background-color: #f1f8ff;
+    color: var(--primary-blue);
+    padding: 12px;
+    border-bottom: 2px solid var(--secondary-blue);
+}
+
+td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+}
+
+tr:hover {
+    background-color: #f9f9f9;
+}
+
+footer {
+    margin-top: 50px;
+    padding: 30px;
+    color: var(--text-light);
+    font-size: 0.9rem;
+    border-top: 1px solid var(--border-color);
 }

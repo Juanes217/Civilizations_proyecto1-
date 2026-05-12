@@ -1,34 +1,35 @@
 <%- include('partials/header') %>
 
-<main class="hero">
-    <section class="portada">
+<main class="container"> 
+    <section class="hero-section">
         <h1 class="fade-in">Benvingut al Regne</h1>
-        <p>Gestiona els teus recursos i conquereix territoris.</p>
-        <div class="captures">
-            <img src="/img/screenshot1.png" alt="Joc" class="img-preview">
-        </div>
-    </section>
+        <p class="subtitle">Gestiona els teus recursos i conquereix territoris.</p>
+        
+        </section>
 
-    <section class="ultimes-batalles">
+    <section class="batalles-section">
         <h2>Últimes 2 Batalles</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Data</th>
-                    <th>Resultat</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% batalles.forEach(batalla => { %>
+        
+        <div class="table-container">
+            <table>
+                <thead>
                     <tr>
-                        <td>#<%= batalla.id %></td>
-                        <td><%= batalla.data %></td>
-                        <td><%= batalla.resultat %></td>
+                        <th>ID</th>
+                        <th>Data</th>
+                        <th>Resultat</th>
                     </tr>
-                <% }) %>
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    <% batalles.forEach(batalla => { %>
+                        <tr>
+                            <td>#<%= batalla.id %></td>
+                            <td><%= batalla.data %></td>
+                            <td><%= batalla.resultat %></td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
     </section>
 </main>
 
