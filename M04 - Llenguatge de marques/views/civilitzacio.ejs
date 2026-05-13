@@ -1,27 +1,31 @@
 <%- include('partials/header') %>
 
-<main class="container">
-    <h1 class="fade-in">Estat de la Civilització</h1>
+<div class="container">
+    <h1>ESTAT DE LA CIVILITZACIÓ</h1>
     <p class="subtitle">Gestió de recursos del teu regne medieval.</p>
 
-    <div class="recursos-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-top: 30px;">
-        <div class="table-container" style="padding: 20px;">
-            <img src="/img/fusta.png" alt="Fusta" style="width: 50px;">
-            <p>Fusta: <strong><%= stats.fusta %></strong></p>
+    <!-- Este contenedor activa el diseño 2x2 -->
+    <div class="resources-grid">
+        <div class="resource-card">
+            <img src="/img/fusta.png" alt="Fusta">
+            <p>Fusta: <span><%= stats.fusta %></span></p>
         </div>
-        <div class="table-container" style="padding: 20px;">
-            <img src="/img/ferro.png" alt="Ferro" style="width: 50px;">
-            <p>Ferro: <strong><%= stats.ferro %></strong></p>
+        
+        <div class="resource-card">
+            <img src="/img/ferro.png" alt="Ferro">
+            <p>Ferro: <span><%= stats.ferro %></span></p>
         </div>
-        <div class="table-container" style="padding: 20px;">
-            <img src="/img/menjar.png" alt="Menjar" style="width: 50px;">
-            <p>Menjar: <strong><%= stats.menjar %></strong></p>
+
+        <div class="resource-card">
+            <img src="/img/menjar.png" alt="Menjar">
+            <p>Menjar: <span><%= stats.menjar %></span></p>
         </div>
-        <div class="table-container" style="padding: 20px;">
-            <img src="/img/maná.png" alt="Manà" style="width: 50px;">
-            <p>Manà: <strong><%= stats.mana %></strong></p>
+
+        <div class="resource-card">
+            <img src="/img/mana.png" alt="Manà">
+            <p>Manà: <span><%= stats.mana %></span></p>
         </div>
     </div>
-</main>
+</div>
 
-<%- include('partials/footer') %> 
+<%- include('partials/footer') %>
