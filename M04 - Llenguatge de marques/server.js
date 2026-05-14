@@ -1,10 +1,16 @@
 const express = require('express');
 const app = express();
 const path = require('path');
+const hbs = require('hbs');
 const db = require(path.join(__dirname, 'base de dades', 'db.js'));
 
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+// ESTO ES LO IMPORTANTE:
+app.set('view engine', 'hbs');
+app.set('views', path.join(__dirname, 'views')); // Usa __dirname con DOBLE guion bajo
+
+// Registrar los partials
+hbs.registerPartials(path.join(__dirname, 'views', 'partials'));
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 1. INICIO

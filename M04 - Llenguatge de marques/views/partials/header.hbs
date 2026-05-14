@@ -11,15 +11,16 @@
         <nav class="navbar">
             <div class="logo-container">
                 <a href="/">
-                    <img src="/img/logo.png" alt="Civilization Logo" class="nav-logo">
+                    <img src="/img/logo.png" alt="Logo" class="nav-logo" style="height: 50px;">
                 </a>
+                <span style="color: #0056b3; font-weight: bold; font-size: 1.2rem; margin-left: 10px;">Regne Civilizations</span>
             </div>
-            <ul class="nav-links">
-                <li><a href="/" class="{{#if (eq page 'inici')}}active{{/if}}">INICI</a></li>
-                <li><a href="/civilitzacio" class="{{#if (eq page 'civi')}}active{{/if}}">CIVILITZACIÓ</a></li>
-                <li><a href="/batalles" class="{{#if (eq page 'historial')}}active{{/if}}">HISTORIAL</a></li>
-                <li><a href="/informe" class="{{#if (eq page 'informe')}}active{{/if}}">INFORME</a></li>
-                <li><a href="/programadors" class="{{#if (eq page 'equip')}}active{{/if}}">EQUIP</a></li>
+            <ul class="nav-links" style="display: flex; list-style: none; gap: 20px;">
+                <li><a href="/" style="text-decoration: none; color: #333; font-weight: bold;">INICI</a></li>
+                <li><a href="/civilitzacio" style="text-decoration: none; color: #333; font-weight: bold;">CIVILITZACIÓ</a></li>
+                <li><a href="/batalles" style="text-decoration: none; color: #333; font-weight: bold;">HISTORIAL</a></li>
+                <li><a href="/informe" style="text-decoration: none; color: #333; font-weight: bold;">INFORME</a></li>
+                <li><a href="/programadors" style="text-decoration: none; color: #333; font-weight: bold;">EQUIP</a></li>
             </ul>
         </nav>
     </header>
