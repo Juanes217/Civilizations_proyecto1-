@@ -1,36 +1,12 @@
 {{> header}}
 
-<div class="container">
-    <div class="report-card">
-        <h1>BATTLE REPORT</h1>
-        <h2>ID BATALLA: #{{batalla.id}}</h2>
-        <p>RESULTAT: {{batalla.resultat}} | DATA: {{batalla.data}}</p>
+<main class="container">
+    <h1 style="color: #0056b3;">REPORTE DE BATALLA</h1> 
+    <p class="subtitle">Estadístiques detallades de l'enfrontament.</p>
 
-        <div class="battle-grid">
-            <div class="res-item">
-                <img src="/img/fusta.png" alt="Fusta">
-                <span>FUSTA</span>
-                <span class="res-val">+{{batalla.wood_gain}}</span>
-            </div>
-            <div class="res-item">
-                <img src="/img/ferro.png" alt="Ferro">
-                <span>FERRO</span>
-                <span class="res-val">+{{batalla.iron_gain}}</span>
-            </div>
-            <div class="res-item">
-                <img src="/img/menjar.png" alt="Menjar">
-                <span>MENJAR</span>
-                <span class="res-val">+{{batalla.food_gain}}</span>
-            </div>
-            <div class="res-item">
-                <img src="/img/mana.png" alt="Mana">
-                <span>MANÀ</span>
-                <span class="res-val">+{{batalla.mana_gain}}</span>
-            </div>
+    <div class="report-card" style="background: rgba(255, 255, 255, 0.9); border: 3px solid #0056b3; padding: 30px; border-radius: 15px; color: #333;">
+        <h2>ID Batalla: #{{batalla.id}}</h2>
         </div>
-        <br>
-        <a href="/batalles" style="color: #0056b3; font-weight: bold;">← TORNAR</a>
-    </div>
-</div>
+</main>
 
 {{> footer}}

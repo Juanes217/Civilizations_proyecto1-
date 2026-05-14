@@ -4,7 +4,6 @@ const path = require('path');
 const hbs = require('hbs');
 const db = require(path.join(__dirname, 'base de dades', 'db.js'));
 
-// ESTO ES LO IMPORTANTE:
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views')); // Usa __dirname con DOBLE guion bajo
 
@@ -17,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', async (req, res) => {
     try {
         const [rows] = await db.query('SELECT * FROM BATTLE_LOG ORDER BY id DESC LIMIT 2');
-        res.render('index', { batalles: rows, page: 'inici' }); // Añadido page
+        res.render('index', { batalles: rows, page: 'inici' }); 
     } catch (error) {
         res.render('index', { batalles: [], page: 'inici' });
     }
@@ -55,19 +54,35 @@ app.get('/batalles', async (req, res) => {
 // 4. INFORME (Ajustado a tus columnas: WOOD_GAIN, IRON_GAIN...)
 app.get('/informe', async (req, res) => {
     const idBatalla = req.query.informe;
-    if (!idBatalla) return res.redirect('/batalles');
+    
+    // Si no hay ID, en lugar de redirigir, podemos buscar la última batalla
+    if (!idBatalla) {
+        try {
+            const [rows] = await db.query('SELECT * FROM BATTLE_LOG ORDER BY id DESC LIMIT 1');
+            if (rows.length > 0) {
+                return res.render('informe', { batalla: rows[0], page: 'informe' });
+            }
+        } catch (e) {
+            return res.redirect('/batalles');
+        }
+    }
+
     try {
-        const [rows] = await db.query('SELECT * FROM BATTLE_LOG WHERE BATTLE_ID = ?', [idBatalla]);
+        const [rows] = await db.query('SELECT * FROM BATTLE_LOG WHERE id = ?', [idBatalla]);
         if (rows.length > 0) {
             res.render('informe', { batalla: rows[0], page: 'informe' }); 
         } else {
             res.status(404).send("Informe no trobat.");
         }
     } catch (error) {
-        res.status(500).send("Error");
+        res.status(500).send("Error al cargar informe");
     }
 });
 
 app.get('/programadors', (req, res) => res.render('programadors', { page: 'equip' }));
+
+hbs.registerHelper('eq', function (a, b) {
+    return String(a) === String(b);
+});
 
 app.listen(3000, () => console.log("Servidor listo en http://localhost:3000"));
