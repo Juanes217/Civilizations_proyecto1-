@@ -1,15 +1,13 @@
-<%- include('partials/header') %>
+{{> header}}
 
 <main class="container"> 
     <section class="hero-section">
         <h1 class="fade-in">Benvingut al Regne</h1>
         <p class="subtitle">Gestiona els teus recursos i conquereix territoris.</p>
-        
-        </section>
+    </section>
 
     <section class="batalles-section">
         <h2>Últimes 2 Batalles</h2>
-        
         <div class="table-container">
             <table>
                 <thead>
@@ -20,17 +18,17 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <% batalles.forEach(batalla => { %>
+                    {{#each batalles}}
                         <tr>
-                            <td>#<%= batalla.id %></td>
-                            <td><%= batalla.data %></td>
-                            <td><%= batalla.resultat %></td>
+                            <td>#{{this.id}}</td>
+                            <td>{{this.data}}</td>
+                            <td>{{this.resultat}}</td>
                         </tr>
-                    <% }) %>
+                    {{/each}}
                 </tbody>
             </table>
         </div>
     </section>
 </main>
 
-<%- include('partials/footer') %>
+{{> footer}}

@@ -1,0 +1,33 @@
+{{> header}}
+
+<main class="container">
+    <h1>Historial de Batalles</h1>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Data</th>
+                    <th>Resultat</th>
+                    <th>Acció</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each batalles}}
+                    <tr>
+                        <td><strong>#{{this.id}}</strong></td>
+                        <td>{{this.data}}</td>
+                        <td>
+                            <span style="color: {{#if (eq this.resultat 'Victòria')}}#28a745{{else}}#dc3545{{/if}}; font-weight: bold;">
+                                {{this.resultat}}
+                            </span>
+                        </td>
+                        <td><a href="/informe?informe={{this.id}}">Detalls</a></td>
+                    </tr>
+                {{/each}}
+            </tbody>
+        </table>
+    </div>
+</main>
+
+{{> footer}}

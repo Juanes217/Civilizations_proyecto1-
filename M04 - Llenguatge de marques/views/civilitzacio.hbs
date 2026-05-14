@@ -1,31 +1,27 @@
-<%- include('partials/header') %>
+{{> header}}
 
 <div class="container">
     <h1>ESTAT DE LA CIVILITZACIÓ</h1>
     <p class="subtitle">Gestió de recursos del teu regne medieval.</p>
 
-    <!-- Este contenedor activa el diseño 2x2 -->
     <div class="resources-grid">
         <div class="resource-card">
             <img src="/img/fusta.png" alt="Fusta">
-            <p>Fusta: <span><%= stats.fusta %></span></p>
+            <p>Fusta: <span>{{stats.fusta}}</span></p>
         </div>
-        
         <div class="resource-card">
             <img src="/img/ferro.png" alt="Ferro">
-            <p>Ferro: <span><%= stats.ferro %></span></p>
+            <p>Ferro: <span>{{stats.ferro}}</span></p>
         </div>
-
         <div class="resource-card">
             <img src="/img/menjar.png" alt="Menjar">
-            <p>Menjar: <span><%= stats.menjar %></span></p>
+            <p>Menjar: <span>{{stats.menjar}}</span></p>
         </div>
-
         <div class="resource-card">
             <img src="/img/mana.png" alt="Manà">
-            <p>Manà: <span><%= stats.mana %></span></p>
+            <p>Manà: <span>{{stats.mana}}</span></p>
         </div>
     </div>
 </div>
 
-<%- include('partials/footer') %>
+{{> footer}}

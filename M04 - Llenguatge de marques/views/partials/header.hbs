@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Civilizations Game</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo-container">
+                <a href="/">
+                    <img src="/img/logo.png" alt="Civilization Logo" class="nav-logo">
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="/" class="{{#if (eq page 'inici')}}active{{/if}}">INICI</a></li>
+                <li><a href="/civilitzacio" class="{{#if (eq page 'civi')}}active{{/if}}">CIVILITZACIÓ</a></li>
+                <li><a href="/batalles" class="{{#if (eq page 'historial')}}active{{/if}}">HISTORIAL</a></li>
+                <li><a href="/informe" class="{{#if (eq page 'informe')}}active{{/if}}">INFORME</a></li>
+                <li><a href="/programadors" class="{{#if (eq page 'equip')}}active{{/if}}">EQUIP</a></li>
+            </ul>
+        </nav>
+    </header>
