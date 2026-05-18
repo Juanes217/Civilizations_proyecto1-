@@ -5,7 +5,7 @@ const hbs = require('hbs');
 const db = require(path.join(__dirname, 'base de dades', 'db.js'));
 
 app.set('view engine', 'hbs');
-app.set('views', path.join(__dirname, 'views')); // Usa __dirname con DOBLE guion bajo
+app.set('views', path.join(__dirname, 'views')); 
 
 // Registrar los partials
 hbs.registerPartials(path.join(__dirname, 'views', 'partials'));

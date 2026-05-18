@@ -1,9 +1,81 @@
 {{> header}}
 
+<style>
+    html, body {
+        height: auto !important;
+        overflow: auto !important;
+        overflow-y: visible !important;
+    }
+    .container, main {
+        height: auto !important;
+        min-height: 100vh !important;
+        overflow: visible !important;
+    }
+</style>
+
 <main class="container"> 
     <section class="hero-section">
         <h1 class="fade-in">Benvingut al Regne</h1>
         <p class="subtitle">Gestiona els teus recursos i conquereix territoris.</p>
+    </section>
+
+    <section class="info-section" style="background: rgba(255, 255, 255, 0.95); border-radius: 12px; padding: 25px; margin: 30px auto; border: 2px solid #0056b3; color: #333; box-shadow: 0 4px 15px rgba(0,0,0,0.2); max-width: 1000px;">
+        <h2 style="color: #0056b3; margin-top: 0; border-bottom: 2px solid #0056b3; padding-bottom: 8px;">Guia de Gestió del Regne</h2>
+        <p style="text-align: justify; font-size: 1.05rem; line-height: 1.6;">
+            A <strong>Civilizations</strong> t'assembles al capdavant d'una xicoteta però ambiciosa civilització. Com a governant, el teu deure és equilibrar l'expansió interna amb la protecció militar davant les amenaces enemigues.
+        </p>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-top: 25px;">
+            
+            <div style="background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #ddd; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <h3 style="color: #0056b3; margin-top: 0; font-size: 1.1rem;"> 1. Economia i Edificis</h3>
+                    <p style="font-size: 0.95rem; color: #555; text-align: justify; margin-bottom: 15px;">
+                        La base de la teva supervivència depèn de quatre recursos clau: <strong>Fusta, Ferro, Menjar i Manà</strong>. Construeix i millora estructures com magatzems o mines per augmentar la producció abans d'enviar la teva població a la guerra.
+                    </p>
+                </div>
+                <div style="text-align: center; background: #fafafa; padding: 15px; border-radius: 6px; border: 1px dashed #ccc; margin-top: auto;">
+                    <img src="/img/edifici.png" alt="Estat de Recursos" style="width: 100%; max-width: 920px; height: auto; max-height: 960px; object-fit: contain; display: inline-block;">
+                </div>
+            </div>
+
+            <div style="background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #ddd; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <h3 style="color: #0056b3; margin-top: 0; font-size: 1.1rem;"> 2. L'Exèrcit</h3>
+                    <p style="font-size: 0.95rem; color: #555; text-align: justify; margin-bottom: 15px;">
+                        Entrena unitats d'atac o de defense per protegir el regne o saquejar faccions enemigues. Cada tropa militar reclutada requereix un cost de manteniment en menjar i ferro, alterant els teus magatzems generals.
+                    </p>
+                </div>
+                <div style="text-align: center; background: #fafafa; padding: 15px; border-radius: 6px; border: 1px dashed #ccc; margin-top: auto;">
+                    <img src="/img/ejercit.png" alt="Reclutament de tropes" style="width: 100%; max-width: 920px; height: auto; max-height: 960px; object-fit: contain; display: inline-block;">
+                </div>
+            </div>
+
+            <div style="background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #ddd; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <h3 style="color: #0056b3; margin-top: 0; font-size: 1.1rem;">3. Tecnologies</h3>
+                    <p style="font-size: 0.95rem; color: #555; text-align: justify; margin-bottom: 15px;">
+                        Gasta el teu manà acumulat a l'arbre de tecnologies. Millorar les tecnologies del regne et permet desbloquejar noves lńies de defensa, optimitzar la velocitat de construcció dels teus edificis i augmentar la força del teu exèrcit.
+                    </p>
+                </div>
+                <div style="text-align: center; background: #fafafa; padding: 15px; border-radius: 6px; border: 1px dashed #ccc; margin-top: auto;">
+                    <img src="/img/tecnologia.png" alt="Reclutament de tropes" style="width: 100%; max-width: 920px; height: auto; max-height: 960px; object-fit: contain; display: inline-block;">
+                </div>
+            </div>
+
+            <div style="background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #ddd; display: flex; flex-direction: column; justify-content: space-between;">
+                <div>
+                    <h3 style="color: #0056b3; margin-top: 0; font-size: 1.1rem;"> 4. Batalla</h3>
+                    <p style="font-size: 0.95rem; color: #555; text-align: justify; margin-bottom: 15px;">
+                        Quan s'inicia una batalla, el sistema calcula la força de les teves línies frontals contra els enemics. El resultat de la simulació es reflecteix directament als Informes, mostrant de forma visual el botí guanyat o les pèrdues de materials militars.
+                    </p>
+                </div>
+                <div style="text-align: center; background: #fafafa; padding: 15px; border-radius: 6px; border: 1px dashed #ccc; margin-top: auto;">
+                    <img src="/img/batalla.png" alt="Reclutament de tropes" style="width: 100%; max-width: 920px; height: auto; max-height: 960px; object-fit: contain; display: inline-block;">
+                </div>
+            </div>
+
+        </div>
     </section>
 
     <section class="batalles-section">
@@ -25,6 +97,13 @@
                             <td>{{this.resultat}}</td>
                         </tr>
                     {{/each}}
+                    {{#unless batalles}}
+                        <tr>
+                            <td colspan="3" style="text-align: center; color: #777; padding: 15px;">
+                                No hi ha registres de batalles recents a la base de dades.
+                            </td>
+                        </tr>
+                    {{/unless}}
                 </tbody>
             </table>
         </div>
