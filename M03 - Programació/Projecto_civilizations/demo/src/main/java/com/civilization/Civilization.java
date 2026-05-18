@@ -19,9 +19,11 @@ public class Civilization implements Variables {
 
     private double currentUpgradeDefenseIronCost = UPGRADE_BASE_DEFENSE_TECHNOLOGY_IRON_COST;
     private double currentUpgradeAttackIronCost = UPGRADE_BASE_ATTACK_TECHNOLOGY_IRON_COST;
+
     public Civilization() {
-    this(0, 0, 10000, 10000, 10000, 0, 0, 0, 0, 0, 0, 0);
-}
+        this(0, 0, 70000, 70000, 70000, 0, 0, 0, 0, 0, 0, 0);
+    }
+
     public Civilization(int technologyDefense, int technologyAttack, int wood, int iron, int food, int mana, int magicTower, int church, int farm, int smithy, int carpentry, int battles) {
         this.technologyDefense = technologyDefense;
         this.technologyAttack = technologyAttack;
@@ -36,13 +38,13 @@ public class Civilization implements Variables {
         this.carpentry = carpentry;
         this.battles = battles;
         
-
         this.army = new ArrayList[9];
         for (int i = 0; i < 9; i++) {
             this.army[i] = new ArrayList<MilitaryUnit>();
         }
     }
 
+    // --- GESTIÓN DE EDIFICIOS ---
 
     public void newFarm() throws ResourceException {
         if (food < FOOD_COST_FARM || wood < WOOD_COST_FARM || iron < IRON_COST_FARM) {
@@ -94,7 +96,28 @@ public class Civilization implements Variables {
         this.iron -= IRON_COST_CHURCH;
         this.mana -= MANA_COST_CHURCH;
     }
+    
+    // --- PRODUCCIÓN PASIVA ---
 
+    public void producirRecursos() {
+        this.food += (this.farm * 20); 
+        this.iron += (this.smithy * 15);
+        this.wood += (this.carpentry * 15);
+        this.mana += (this.magicTower * 5);
+    }
+
+    // --- RECOMPENSAS DE BATALLA (AÑADIDO) ---
+
+    /**
+     * Suma al tesoro los recursos saqueados tras una victoria militar.
+     */
+    public void recibirBotinGuerra(int comidaRecuperada, int manaRecuperado) {
+        this.food += comidaRecuperada;
+        this.mana += manaRecuperado;
+        System.out.println("LOG: El imperio ha procesado un botín de " + comidaRecuperada + " comida y " + manaRecuperado + " maná.");
+    }
+
+    // --- MEJORAS TECNOLÓGICAS ---
 
     public void upgradeTechnologyDefense() throws ResourceException {
         if (this.iron >= currentUpgradeDefenseIronCost) {
@@ -118,212 +141,92 @@ public class Civilization implements Variables {
         }
     }
 
+    // --- SISTEMA DE RECLUTAMIENTO ---
 
-    private void createUnits(int n,int type,int foodCost,int woodCost,int ironCost,String unitName) throws ResourceException {
-        int maxFood = food / foodCost;
-        int maxWood = wood / woodCost;
-        int maxIron = iron / ironCost;
-        int numTropas = Math.min(n,Math.min(maxFood, Math.min(maxWood, maxIron)));
+    private void createUnits(int n, int type, int foodCost, int woodCost, int ironCost, String unitName) throws ResourceException {
+        int maxFood = (foodCost <= 0) ? Integer.MAX_VALUE : food / foodCost;
+        int maxWood = (woodCost <= 0) ? Integer.MAX_VALUE : wood / woodCost;
+        int maxIron = (ironCost <= 0) ? Integer.MAX_VALUE : iron / ironCost;
+
+        int numTropas = Math.min(n, Math.min(maxFood, Math.min(maxWood, maxIron)));
+        
         if (numTropas <= 0) {
-            throw new ResourceException("Not enough resources for " + unitName);
+            throw new ResourceException("Recursos insuficientes para alistar " + unitName);
         }
+
         for (int i = 0; i < numTropas; i++) {
             switch (type) {
-                case 0:
-                    army[0].add(new Swordsman());
-                    break;
-                case 1:
-                    army[1].add(new Spearman());
-                    break;
-
-                case 2:
-                    army[2].add(new Crossbow());
-                    break;
-
-                case 3:
-                    army[3].add(new Cannon());
-                    break;
-
-                case 4:
-                    army[4].add(new ArrowTower());
-                    break;
-
-                case 5:
-                    army[5].add(new Catapult());
-                    break;
-
-                case 6:
-                    army[6].add(new RocketLauncherTower());
-                    break;
-
-                case 7:
-                    army[7].add(new Magician());
-                    break;
-
-                case 8:
-                    army[8].add(new Priest());
-                    break;
+                case 0: army[0].add(new Swordsman()); break;
+                case 1: army[1].add(new Spearman()); break;
+                case 2: army[2].add(new Crossbow()); break;
+                case 3: army[3].add(new Cannon()); break;
+                case 4: army[4].add(new ArrowTower()); break;
+                case 5: army[5].add(new Catapult()); break;
+                case 6: army[6].add(new RocketLauncherTower()); break;
+                case 7: army[7].add(new Magician()); break;
+                case 8: army[8].add(new Priest()); break;
             }
         }
+
         food -= numTropas * foodCost;
         wood -= numTropas * woodCost;
         iron -= numTropas * ironCost;
 
-        System.out.println("You've trained " +numTropas +" " +unitName);
         if (numTropas < n) {
-            throw new ResourceException("Only " + numTropas + " " + unitName + " created");
-            }
+            throw new ResourceException("Solo se pudieron crear " + numTropas + " " + unitName);
         }
+    }
 
-    public void newSwordsman(int n) throws ResourceException {
-        createUnits(n, 0, FOOD_COST_SWORDSMAN, WOOD_COST_SWORDSMAN, IRON_COST_SWORDSMAN, "swordsmen");
-    }
-    public void newSpearman(int n) throws ResourceException {
-        createUnits(n, 1, FOOD_COST_SPEARMAN, WOOD_COST_SPEARMAN, IRON_COST_SPEARMAN, "spearmen");
-    }
-    public void newCrossbow(int n) throws ResourceException {
-        createUnits(n, 2, FOOD_COST_CROSSBOW, WOOD_COST_CROSSBOW, IRON_COST_CROSSBOW, "crossbows");
-    }
-    public void newCannon(int n) throws ResourceException {
-        createUnits(n, 3, FOOD_COST_CANNON, WOOD_COST_CANNON, IRON_COST_CANNON, "cannons");
-    }
-    public void newArrowTower(int n) throws ResourceException {
-        createUnits(n, 4, FOOD_COST_ARROWTOWER, WOOD_COST_ARROWTOWER, IRON_COST_ARROWTOWER, "arrow towers");
-    }
-    public void newCatapult(int n) throws ResourceException {
-        createUnits(n, 5, FOOD_COST_CATAPULT, WOOD_COST_CATAPULT, IRON_COST_CATAPULT, "catapults");
-    }
-    public void newRocketLauncher(int n) throws ResourceException {
-        createUnits(n, 6, FOOD_COST_ROCKETLAUNCHERTOWER, WOOD_COST_ROCKETLAUNCHERTOWER, IRON_COST_ROCKETLAUNCHERTOWER, "rocket launchers");
-    }
+    public void newSwordsman(int n) throws ResourceException { createUnits(n, 0, FOOD_COST_SWORDSMAN, WOOD_COST_SWORDSMAN, IRON_COST_SWORDSMAN, "espadachines"); }
+    public void newSpearman(int n) throws ResourceException { createUnits(n, 1, FOOD_COST_SPEARMAN, WOOD_COST_SPEARMAN, IRON_COST_SPEARMAN, "lanceros"); }
+    public void newCrossbow(int n) throws ResourceException { createUnits(n, 2, FOOD_COST_CROSSBOW, WOOD_COST_CROSSBOW, IRON_COST_CROSSBOW, "ballesteros"); }
+    public void newCannon(int n) throws ResourceException { createUnits(n, 3, FOOD_COST_CANNON, WOOD_COST_CANNON, IRON_COST_CANNON, "cañones"); }
+    public void newArrowTower(int n) throws ResourceException { createUnits(n, 4, FOOD_COST_ARROWTOWER, WOOD_COST_ARROWTOWER, IRON_COST_ARROWTOWER, "torres de flechas"); }
+    public void newCatapult(int n) throws ResourceException { createUnits(n, 5, FOOD_COST_CATAPULT, WOOD_COST_CATAPULT, IRON_COST_CATAPULT, "catapultas"); }
+    public void newRocketLauncher(int n) throws ResourceException { createUnits(n, 6, FOOD_COST_ROCKETLAUNCHERTOWER, WOOD_COST_ROCKETLAUNCHERTOWER, IRON_COST_ROCKETLAUNCHERTOWER, "torres de cohetes"); }
+    
     public void newMagician(int n) throws BuildingException, ResourceException {
-        if (magicTower == 0) throw new BuildingException("You need a magic tower");
-        createUnits(n, 7, FOOD_COST_MAGICIAN, WOOD_COST_MAGICIAN, IRON_COST_MAGICIAN, "magicians");
+        if (magicTower == 0) throw new BuildingException("Necesitas una Torre Mágica");
+        createUnits(n, 7, FOOD_COST_MAGICIAN, WOOD_COST_MAGICIAN, IRON_COST_MAGICIAN, "magos");
     }
+    
     public void newPriest(int n) throws BuildingException, ResourceException {
-        if (church == 0) throw new BuildingException("You need a church");
-        createUnits(n, 8, FOOD_COST_PRIEST, WOOD_COST_PRIEST, IRON_COST_PRIEST, "priests");
+        if (church == 0) throw new BuildingException("Necesitas una Iglesia");
+        createUnits(n, 8, FOOD_COST_PRIEST, WOOD_COST_PRIEST, IRON_COST_PRIEST, "sacerdotes");
     }
             
-    
-    
-      
-
-    // --- PRINT STATS ---
-
     public void printStats() {
         System.out.println("***************************CIVILIZATION STATS***************************");
-        System.out.println("--------------------------------TECHNOLOGY------------------------------");
-        System.out.printf("Attack: %d | Defense: %d\n", technologyAttack, technologyDefense);
-        System.out.println("--------------------------------BUILDINGS-------------------------------");
-        System.out.printf("Farm: %d | Smithy: %d | Carpentry: %d | Magic Tower: %d | Church: %d\n", 
+        System.out.printf("Alimentos: %d | Madera: %d | Hierro: %d | Maná: %d\n", food, wood, iron, mana);
+        System.out.printf("Granjas: %d | Herrerías: %d | Carpinterías: %d | Torres: %d | Iglesias: %d\n", 
                           farm, smithy, carpentry, magicTower, church);
-        System.out.println("---------------------------------ARMY-----------------------------------");
-        System.out.printf("Swordsman: %d | Spearman: %d | Crossbow: %d | Cannon: %d\n", 
-                          army[0].size(), army[1].size(), army[2].size(), army[3].size());
-        System.out.printf("Arrow Tower: %d | Catapult: %d | Rocket Launcher: %d\n", 
-                          army[4].size(), army[5].size(), army[6].size());
-        System.out.printf("Magician: %d | Priest: %d\n", army[7].size(), army[8].size());
-        System.out.println("-------------------------------RESOURCES--------------------------------");
-        System.out.printf("Food: %d | Wood: %d | Iron: %d | Mana: %d\n", food, wood, iron, mana);
         System.out.println("************************************************************************");
     }
-     public int getTechnologyDefense() {
-        return this.technologyDefense;
-    }
 
-    public void setTechnologyDefense(int technologyDefense) {
-        this.technologyDefense = technologyDefense;
-    }
-
-    public int getTechnologyAttack() {
-        return this.technologyAttack;
-    }
-
-    public void setTechnologyAttack(int technologyAttack) {
-        this.technologyAttack = technologyAttack;
-    }
-
-    public int getWood() {
-        return this.wood;
-    }
-
-    public void setWood(int wood) {
-        this.wood = wood;
-    }
-
-    public int getIron() {
-        return this.iron;
-    }
-
-    public void setIron(int iron) {
-        this.iron = iron;
-    }
-
-    public int getFood() {
-        return this.food;
-    }
-
-    public void setFood(int food) {
-        this.food = food;
-    }
-
-    public int getMana() {
-        return this.mana;
-    }
-
-    public void setMana(int mana) {
-        this.mana = mana;
-    }
-
-    public int getMagicTower() {
-        return this.magicTower;
-    }
-
-    public void setMagicTower(int magicTower) {
-        this.magicTower = magicTower;
-    }
-
-    public int getChurch() {
-        return this.church;
-    }
-
-    public void setChurch(int church) {
-        this.church = church;
-    }
-
-    public int getFarm() {
-        return this.farm;
-    }
-
-    public void setFarm(int farm) {
-        this.farm = farm;
-    }
-
-    public int getSmithy() {
-        return this.smithy;
-    }
-
-    public void setSmithy(int smithy) {
-        this.smithy = smithy;
-    }
-
-    public int getCarpentry() {
-        return this.carpentry;
-    }
-
-    public void setCarpentry(int carpentry) {
-        this.carpentry = carpentry;
-    }
-
-    public int getBattles() {
-        return this.battles;
-    }
-
-    public void setBattles(int battles) {
-        this.battles = battles;
-    }
-    public ArrayList<MilitaryUnit>[] getArmy() {
-        return this.army;
-    }
+    // --- GETTERS Y SETTERS ---
+    public int getTechnologyDefense() { return this.technologyDefense; }
+    public void setTechnologyDefense(int technologyDefense) { this.technologyDefense = technologyDefense; }
+    public int getTechnologyAttack() { return this.technologyAttack; }
+    public void setTechnologyAttack(int technologyAttack) { this.technologyAttack = technologyAttack; }
+    public int getWood() { return this.wood; }
+    public void setWood(int wood) { this.wood = wood; }
+    public int getIron() { return this.iron; }
+    public void setIron(int iron) { this.iron = iron; }
+    public int getFood() { return this.food; }
+    public void setFood(int food) { this.food = food; }
+    public int getMana() { return this.mana; }
+    public void setMana(int mana) { this.mana = mana; }
+    public int getMagicTower() { return this.magicTower; }
+    public void setMagicTower(int magicTower) { this.magicTower = magicTower; }
+    public int getChurch() { return this.church; }
+    public void setChurch(int church) { this.church = church; }
+    public int getFarm() { return this.farm; }
+    public void setFarm(int farm) { this.farm = farm; }
+    public int getSmithy() { return this.smithy; }
+    public void setSmithy(int smithy) { this.smithy = smithy; }
+    public int getCarpentry() { return this.carpentry; }
+    public void setCarpentry(int carpentry) { this.carpentry = carpentry; }
+    public int getBattles() { return this.battles; }
+    public void setBattles(int battles) { this.battles = battles; }
+    public ArrayList<MilitaryUnit>[] getArmy() { return this.army; }
 }

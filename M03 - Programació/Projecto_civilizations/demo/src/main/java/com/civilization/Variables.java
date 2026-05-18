@@ -27,8 +27,8 @@ public interface Variables {
 	// COST ATTACK UNITS
 	public final int FOOD_COST_SWORDSMAN = 8000;
 	public final int FOOD_COST_SPEARMAN = 5000;
-	public final int FOOD_COST_CROSSBOW = 0;
-	public final int FOOD_COST_CANNON = 0;
+	public final int FOOD_COST_CROSSBOW = 8000;
+	public final int FOOD_COST_CANNON = 5000;
 	public final int WOOD_COST_SWORDSMAN = 3000;
 	public final int WOOD_COST_SPEARMAN = 6500;
 	public final int WOOD_COST_CROSSBOW = 45000;

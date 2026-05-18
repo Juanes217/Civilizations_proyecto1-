@@ -111,7 +111,7 @@ public class Main implements Variables {
                         // Aquí creamos un enemigo rápido para probar la batalla
                         System.out.println("¡Un ejército enemigo ha aparecido!");
                         // El método getArmy() de tu civilization debe devolver el array de listas
-                        Battle battle = new Battle(civilization.getArmy(), enemyArmy); 
+                        Battle battle = new Battle(civilization, enemyArmy); 
                         battle.simulateBattle();
                         break;
                     case 12:

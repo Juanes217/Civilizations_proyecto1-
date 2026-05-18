@@ -12,10 +12,14 @@ public class Battle implements Variables {
     private int bajasEnemigo = 0;
     private int[][] perdidasRecursos; // [Bando][0=Comida, 1=Madera, 2=Hierro]
     private Random aleatorio = new Random();
+    
+    // Necesitamos la referencia a la civilización para darle los recursos
+    private Civilization miCivilizacion;
 
-    public Battle(ArrayList<MilitaryUnit>[] ejercitoCivilizacion, ArrayList<MilitaryUnit>[] ejercitoEnemigo) {
+    public Battle(Civilization civ, ArrayList<MilitaryUnit>[] ejercitoEnemigo) {
+        this.miCivilizacion = civ;
         this.ejercitos = new ArrayList[2][9];
-        this.ejercitos[0] = ejercitoCivilizacion;
+        this.ejercitos[0] = civ.getArmy(); // Obtenemos el ejército actual de tu civilización
         this.ejercitos[1] = ejercitoEnemigo;
         this.desarrolloBatalla = new StringBuilder();
         this.perdidasRecursos = new int[2][3]; 
@@ -38,7 +42,6 @@ public class Battle implements Variables {
             int bandoAtacante = turno % 2;
             int bandoDefensor = (bandoAtacante == 0) ? 1 : 0;
 
-            // Seleccionar grupo atacante (PDF: elegir hasta que no esté vacío)
             int grupoAtacante;
             do {
                 grupoAtacante = elegirGrupoUnidad(bandoAtacante);
@@ -46,7 +49,6 @@ public class Battle implements Variables {
             
             MilitaryUnit atacante = ejercitos[bandoAtacante][grupoAtacante].get(aleatorio.nextInt(ejercitos[bandoAtacante][grupoAtacante].size()));
 
-            // Seleccionar grupo defensor
             int grupoDefensor;
             do {
                 grupoDefensor = elegirGrupoUnidad(bandoDefensor);
@@ -54,14 +56,28 @@ public class Battle implements Variables {
             
             MilitaryUnit defensor = ejercitos[bandoDefensor][grupoDefensor].get(aleatorio.nextInt(ejercitos[bandoDefensor][grupoDefensor].size()));
 
-            // Ejecutar el combate
             pelear(atacante, defensor, bandoAtacante, grupoDefensor);
             
             turno++;
         }
         
+        // --- PROCESAR RESULTADO Y BOTÍN ---
+        String resultadoTexto = obtenerGanador();
         System.out.println(desarrolloBatalla.toString());
-        System.out.println(obtenerGanador());
+        System.out.println(resultadoTexto);
+
+        // Si el jugador ha ganado (totalCiv < totalEnem significa que perdimos menos valor)
+        double totalCiv = perdidasRecursos[0][2] + (perdidasRecursos[0][1] / 5.0) + (perdidasRecursos[0][0] / 10.0);
+        double totalEnem = perdidasRecursos[1][2] + (perdidasRecursos[1][1] / 5.0) + (perdidasRecursos[1][0] / 10.0);
+
+        if (totalCiv < totalEnem) {
+            // Calculamos un botín basado en las bajas enemigas (por ejemplo 100 de comida y 50 de maná por cada baja)
+            int botinComida = bajasEnemigo * 100;
+            int botinMana = bajasEnemigo * 25;
+            
+            // Llamamos al método que añadimos en Civilization
+            miCivilizacion.recibirBotinGuerra(botinComida, botinMana);
+        }
     }
 
     private void pelear(MilitaryUnit atacante, MilitaryUnit defensor, int bandoAtacante, int grupoDefensor) {
@@ -73,9 +89,8 @@ public class Battle implements Variables {
         defensor.takeDamage(daño);
 
         if (defensor.getActualArmor() <= 0) {
-            desarrolloBatalla.append("   ¡Baja: " + defensor.getClass().getSimpleName() + " ha sido destruido!\n");
+            desarrolloBatalla.append("    ¡Baja: " + defensor.getClass().getSimpleName() + " ha sido destruido!\n");
             
-            // Registrar pérdidas económicas según fórmula PDF
             perdidasRecursos[bandoDefensor][0] += defensor.getFoodCost();
             perdidasRecursos[bandoDefensor][1] += defensor.getWoodCost();
             perdidasRecursos[bandoDefensor][2] += defensor.getIronCost();
@@ -99,7 +114,6 @@ public class Battle implements Variables {
     }
 
     public String obtenerGanador() {
-        // Fórmula del PDF: Hierro + Madera/5 + Comida/10
         double totalCiv = perdidasRecursos[0][2] + (perdidasRecursos[0][1] / 5.0) + (perdidasRecursos[0][0] / 10.0);
         double totalEnem = perdidasRecursos[1][2] + (perdidasRecursos[1][1] / 5.0) + (perdidasRecursos[1][0] / 10.0);
 
@@ -123,7 +137,6 @@ public class Battle implements Variables {
             actualesCiv += ejercitos[0][i].size();
             actualesEnem += ejercitos[1][i].size();
         }
-        // Condición PDF: Termina cuando un bando pierde el 80% (queda el 20%)
         return actualesCiv <= (unidadesInicialesCivilizacion * 0.2) || 
                actualesEnem <= (unidadesInicialesEnemigo * 0.2);
     }
