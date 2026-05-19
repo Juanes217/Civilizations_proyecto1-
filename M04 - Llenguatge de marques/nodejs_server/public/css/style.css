@@ -1,0 +1,191 @@
+/* --- CONFIGURACIÓN GENERAL --- */
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap');
+
+:root {
+    --primary-blue: #1a5fb4;
+    --secondary-blue: #62a0ea;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --text-main: #1a1a1a;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background: url('/img/fondo.png') no-repeat center center fixed;
+    background-size: cover;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    /* CAMBIO SEGURO: Permitimos scroll vertical para ver las últimas batallas sin encoger la pantalla */
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto; 
+}
+
+/* --- NAVBAR --- */
+.navbar {
+    background-color: #ffffff;
+    border-bottom: 3px solid var(--primary-blue);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 40px;
+    height: 70px;
+    box-sizing: border-box;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img { height: 45px; }
+
+.logo span {
+    font-size: 1.4rem;
+    font-weight: 900;
+    color: var(--primary-blue);
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: var(--text-main);
+    font-weight: 700;
+    font-size: 0.95rem;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover, .nav-links a.active {
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+/* --- CONTENEDOR PRINCIPAL --- */
+.container {
+    flex: 1;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 40px 20px;
+    box-sizing: border-box;
+}
+
+/* --- SECCIÓN HERO --- */
+.hero-section {
+    text-align: center;
+    margin-bottom: 40px;
+    color: white;
+    text-shadow: 0 4px 10px rgba(0,0,0,0.7);
+}
+
+.hero-section h1 {
+    font-size: 3.5rem;
+    font-weight: 900;
+    margin: 0 0 10px 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.hero-section .subtitle {
+    font-size: 1.4rem;
+    font-weight: 400;
+    margin: 0;
+}
+
+/* --- SECCIÓN CIV_STATS (GRID RECURSOS) --- */
+.resources-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 280px); 
+    gap: 25px;
+    justify-content: center; /* Centra el bloque 2x2 en la pantalla */
+    margin: 0 auto;
+}
+
+.resource-card {
+    background: var(--card-bg);
+    border: 2px solid var(--primary-blue);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.3s ease;
+}
+
+.resource-card:hover {
+    transform: translateY(-5px);
+}
+
+.resource-card img {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+    object-fit: contain;
+}
+
+.resource-card p {
+    margin: 5px 0;
+    font-size: 1.2rem;
+    font-weight: 700;
+}
+
+.resource-card span {
+    color: var(--primary-blue);
+    font-weight: 900;
+    font-size: 1.4rem;
+}
+
+/* --- TABLAS (INDEX E HISTORIAL) --- */
+.table-container {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    border: 2px solid var(--primary-blue);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+th {
+    background-color: var(--primary-blue);
+    color: white;
+    padding: 12px 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+}
+
+td {
+    padding: 12px 15px;
+    border-bottom: 1px solid #ddd;
+    color: var(--text-main);
+    font-size: 1rem;
+}
+
+tr:hover {
+    background-color: rgba(26, 95, 180, 0.05);
+}
+
+.batalles-section h2 {
+    color: white;
+    font-size: 2rem;
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    margin-bottom: 20px;
+}
