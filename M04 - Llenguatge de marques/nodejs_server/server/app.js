@@ -2,18 +2,16 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const hbs = require('hbs');
-
-// CORRECCIÓN DE RUTAS: Al estar dentro de /server, retrocedemos un nivel ('..') para encontrar la base de dades
 const db = require('./db');
 
-// CORRECCIÓN DE VISTAS: Buscamos dentro de la propia carpeta server/views
+// Buscamos dentro de la propia carpeta server/views
 app.set('view engine', 'hbs');
 app.set('views', path.join(__dirname, 'views')); 
 
-// CORRECCIÓN DE PARTIALS: Buscamos dentro de server/views/partials
+// Buscamos dentro de server/views/partials
 hbs.registerPartials(path.join(__dirname, 'views', 'partials'));
 
-// CORRECCIÓN ESTÁTICOS: Retrocedemos un nivel para encontrar la carpeta pública en la raíz (/public)
+// Retrocedemos un nivel para encontrar la carpeta pública en la raíz (/public)
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 // 1. INICIO

@@ -16,7 +16,6 @@ body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    /* CAMBIO SEGURO: Permitimos scroll vertical para ver las últimas batallas sin encoger la pantalla */
     height: auto;
     min-height: 100vh;
     overflow-y: auto; 
@@ -108,7 +107,7 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 280px); 
     gap: 25px;
-    justify-content: center; /* Centra el bloque 2x2 en la pantalla */
+    justify-content: center; 
     margin: 0 auto;
 }
 

@@ -1,6 +1,6 @@
 const mysql = require('mysql2/promise');
 
-// Detectamos de forma automática si estamos en Proxmox (si tiene un puerto de entorno asignado)
+// Detectamos de forma automática si estamos en Proxmox
 const isProxmox = process.env.PORT ? true : false;
 
 // Declaramos la variable db vacía usando let para poder reasignarla dentro del condicional
